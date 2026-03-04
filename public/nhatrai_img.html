@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="vi"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&amp;family=Noto+Sans:wght@400;500;700&amp;family=Pinyon+Script&amp;family=Great+Vibes&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8b0000",
+                        "gold": "#b8860b",
+                        "ivory": "#fdfcf0",
+                    },
+                    fontFamily: {
+                        "serif": ["Noto Serif", "serif"],
+                        "sans": ["Noto Sans", "sans-serif"],
+                        "script": ["Pinyon Script", "cursive"],
+                        "decorative": ["Great Vibes", "cursive"]
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .grid-pattern {
+                background-color: #fdfcf0;
+                background-image: radial-gradient(#ede6d5 1px, transparent 1px);
+                background-size: 12px 12px;
+            }
+            .gold-double-border {
+                border: 2px solid #b8860b;
+                position: relative;
+            }
+            .gold-double-border::after {
+                content: '';
+                position: absolute;
+                inset: 8px;
+                border: 1px solid rgba(184, 134, 11, 0.4);
+                pointer-events: none;
+            }
+            .icon-circle {
+                @apply w-16 h-16 rounded-full border-2 border-gold/40 flex items-center justify-center bg-white/50 shadow-sm overflow-hidden;
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral-200 flex items-center justify-center min-h-screen p-8">
+<div class="w-[850px] h-[1000px] bg-ivory shadow-2xl relative overflow-hidden flex flex-col p-4">
+<div class="h-full w-full grid-pattern gold-double-border flex flex-col items-center justify-between py-16 px-12 text-center">
+<div class="space-y-6 w-full flex flex-col items-center">
+<div class="flex flex-col items-center gap-4">
+<h2 class="text-primary text-[1.54rem] font-sans font-bold tracking-[0.2em] uppercase" style="">TRÂN TRỌNG KÍNH MỜI</h2>
+<p class="text-primary font-serif italic text-lg opacity-90" style="">Tới dự bữa tiệc thân mật chung vui cùng gia đình chúng tôi</p>
+</div>
+<div class="flex items-center justify-center w-full mt-4">
+<div class="flex-1 text-right">
+<h1 class="text-primary text-[3.125rem] font-decorative pr-4 leading-tight" style="">Khánh Hưng</h1>
+</div>
+<div class="relative w-12 h-10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-gold text-3xl absolute -translate-x-2 opacity-90" style="font-variation-settings: &quot;FILL&quot; 1;">favorite</span>
+<span class="material-symbols-outlined text-gold text-3xl absolute translate-x-2" style="font-variation-settings: &quot;FILL&quot; 1;">favorite</span>
+</div>
+<div class="flex-1 text-left">
+<h1 class="text-primary text-[3.125rem] font-decorative pl-4 leading-tight" style="">Đinh Hà</h1>
+</div>
+</div>
+<div class="flex items-center justify-center gap-4 mt-2">
+<div class="w-24 h-[1px] bg-gold/50"></div>
+<span class="material-symbols-outlined text-gold text-sm" style="">flare</span>
+<div class="w-24 h-[1px] bg-gold/50"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-0 w-full flex-grow items-center my-6">
+<div class="flex flex-col items-center px-10 border-r border-gold/20 h-full justify-center space-y-8">
+<div class="icon-circle">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: &quot;wght&quot; 400;">restaurant</span>
+</div>
+<h3 class="text-primary text-6xl font-decorative h-16 flex items-center" style="">Tiệc Mừng</h3>
+<div class="space-y-2">
+<p class="text-[#1a1a1a] text-3xl font-bold font-serif tracking-tight" style="">21 / 03 / 2026</p>
+<p class="text-primary text-sm font-serif italic" style="">tức ngày 3, tháng 2 năm Bính Ngọ</p>
+<p class="text-primary text-xl font-medium pt-2" style="">Vào lúc 16:00, Thứ Bảy</p>
+</div>
+<div class="space-y-2 pt-2">
+<p class="text-neutral-800 font-bold uppercase text-[10px] tracking-widest" style="">Địa điểm</p>
+<div class="text-neutral-700 text-sm leading-relaxed" style="">
+                            Tư gia Họ nhà Trai<br>
+                            Thôn Mạnh Tiến 1, Xã Lạc Thủy<br>
+<b class="font-bold text-neutral-800">Tỉnh Hòa Bình</b>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center px-10 h-full justify-center space-y-8">
+<div class="icon-circle">
+<div class="relative flex items-center justify-center w-full h-full text-gold">
+<span class="material-symbols-outlined text-3xl absolute -translate-x-2" style="font-variation-settings: &quot;wght&quot; 400;">panorama_fish_eye</span>
+<span class="material-symbols-outlined text-3xl absolute translate-x-2" style="font-variation-settings: &quot;wght&quot; 400;">panorama_fish_eye</span>
+</div>
+</div>
+<h3 class="text-primary text-6xl font-decorative h-16 flex items-center whitespace-nowrap" style="">Lễ Thành Hôn</h3>
+<div class="space-y-2">
+<p class="text-[#1a1a1a] text-3xl font-bold font-serif tracking-tight" style="">22 / 03 / 2026</p>
+<p class="text-primary text-sm font-serif italic" style="">tức ngày 4, tháng 2 năm Bính Ngọ</p>
+<p class="text-primary text-xl font-medium pt-2" style="">Vào lúc 10:00, Chủ Nhật</p>
+</div>
+<div class="space-y-2 pt-2">
+<p class="text-neutral-800 font-bold uppercase text-[10px] tracking-widest" style="">Địa điểm</p>
+<div class="text-neutral-700 text-sm leading-relaxed" style="">Tư gia Họ nhà Trai<br style="--tw-scale-x: 1; --tw-scale-y: 1; --tw-pan-x: ; --tw-pan-y: ; --tw-pinch-zoom: ; --tw-scroll-snap-strictness: proximity; --tw-gradient-from-position: ; --tw-gradient-via-position: ; --tw-gradient-to-position: ; --tw-ordinal: ; --tw-slashed-zero: ; --tw-numeric-figure: ; --tw-numeric-spacing: ; --tw-numeric-fraction: ; --tw-ring-inset: ; --tw-ring-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-color: rgb(59 130 246 / 0.5); --tw-ring-offset-shadow: 0 0 #0000; --tw-ring-shadow: 0 0 #0000; --tw-shadow: 0 0 #0000; --tw-shadow-colored: 0 0 #0000; --tw-blur: ; --tw-brightness: ; --tw-contrast: ; --tw-grayscale: ; --tw-hue-rotate: ; --tw-invert: ; --tw-saturate: ; --tw-sepia: ; --tw-drop-shadow: ; --tw-backdrop-blur: ; --tw-backdrop-brightness: ; --tw-backdrop-contrast: ; --tw-backdrop-grayscale: ; --tw-backdrop-hue-rotate: ; --tw-backdrop-invert: ; --tw-backdrop-opacity: ; --tw-backdrop-saturate: ; --tw-backdrop-sepia: ; --tw-contain-size: ; --tw-contain-layout: ; --tw-contain-paint: ; --tw-contain-style: ;">Thôn Mạnh Tiến 1, Xã Lạc Thủy<br style="--tw-scale-x: 1; --tw-scale-y: 1; --tw-pan-x: ; --tw-pan-y: ; --tw-pinch-zoom: ; --tw-scroll-snap-strictness: proximity; --tw-gradient-from-position: ; --tw-gradient-via-position: ; --tw-gradient-to-position: ; --tw-ordinal: ; --tw-slashed-zero: ; --tw-numeric-figure: ; --tw-numeric-spacing: ; --tw-numeric-fraction: ; --tw-ring-inset: ; --tw-ring-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-color: rgb(59 130 246 / 0.5); --tw-ring-offset-shadow: 0 0 #0000; --tw-ring-shadow: 0 0 #0000; --tw-shadow: 0 0 #0000; --tw-shadow-colored: 0 0 #0000; --tw-blur: ; --tw-brightness: ; --tw-contrast: ; --tw-grayscale: ; --tw-hue-rotate: ; --tw-invert: ; --tw-saturate: ; --tw-sepia: ; --tw-drop-shadow: ; --tw-backdrop-blur: ; --tw-backdrop-brightness: ; --tw-backdrop-contrast: ; --tw-backdrop-grayscale: ; --tw-backdrop-hue-rotate: ; --tw-backdrop-invert: ; --tw-backdrop-opacity: ; --tw-backdrop-saturate: ; --tw-backdrop-sepia: ; --tw-contain-size: ; --tw-contain-layout: ; --tw-contain-paint: ; --tw-contain-style: ;"><span class="font-bold text-neutral-800" style="--tw-scale-x: 1; --tw-scale-y: 1; --tw-pan-x: ; --tw-pan-y: ; --tw-pinch-zoom: ; --tw-scroll-snap-strictness: proximity; --tw-gradient-from-position: ; --tw-gradient-via-position: ; --tw-gradient-to-position: ; --tw-ordinal: ; --tw-slashed-zero: ; --tw-numeric-figure: ; --tw-numeric-spacing: ; --tw-numeric-fraction: ; --tw-ring-inset: ; --tw-ring-offset-width: 0px; --tw-ring-offset-color: #fff; --tw-ring-color: rgb(59 130 246 / 0.5); --tw-ring-offset-shadow: 0 0 #0000; --tw-ring-shadow: 0 0 #0000; --tw-shadow: 0 0 #0000; --tw-shadow-colored: 0 0 #0000; --tw-blur: ; --tw-brightness: ; --tw-contrast: ; --tw-grayscale: ; --tw-hue-rotate: ; --tw-invert: ; --tw-saturate: ; --tw-sepia: ; --tw-drop-shadow: ; --tw-backdrop-blur: ; --tw-backdrop-brightness: ; --tw-backdrop-contrast: ; --tw-backdrop-grayscale: ; --tw-backdrop-hue-rotate: ; --tw-backdrop-invert: ; --tw-backdrop-opacity: ; --tw-backdrop-saturate: ; --tw-backdrop-sepia: ; --tw-contain-size: ; --tw-contain-layout: ; --tw-contain-paint: ; --tw-contain-style: ; --tw-text-opacity: 1; color: rgb(38, 38, 38);">Tỉnh Hòa Bình</span></div>
+</div>
+</div>
+</div>
+<div class="w-full space-y-8 pb-4 mt-auto">
+<div class="flex items-center justify-center gap-6">
+<div class="h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent flex-grow max-w-[150px]"></div>
+<span class="material-symbols-outlined text-gold text-xl" style="">auto_awesome</span>
+<div class="h-[1px] bg-gradient-to-l from-transparent via-gold to-transparent flex-grow max-w-[150px]"></div>
+</div>
+<p class="text-primary text-xl italic font-serif opacity-90 max-w-2xl mx-auto px-4" style="">
+                    Sự hiện diện của quý khách là niềm vinh hạnh của chúng tôi
+                </p>
+</div>
+</div>
+<div class="absolute top-10 left-10 w-24 h-24 border-t-2 border-l-2 border-gold/40 rounded-tl-2xl pointer-events-none"></div>
+<div class="absolute top-10 right-10 w-24 h-24 border-t-2 border-r-2 border-gold/40 rounded-tr-2xl pointer-events-none"></div>
+<div class="absolute bottom-10 left-10 w-24 h-24 border-b-2 border-l-2 border-gold/40 rounded-bl-2xl pointer-events-none"></div>
+<div class="absolute bottom-10 right-10 w-24 h-24 border-b-2 border-r-2 border-gold/40 rounded-br-2xl pointer-events-none"></div>
+</div>
+
+</body></html>
