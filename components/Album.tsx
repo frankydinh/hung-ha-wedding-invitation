@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
@@ -38,6 +38,24 @@ export default function Album({ images }: AlbumProps) {
     };
   }, [imagesLoaded]);
 
+  // Keyboard navigation for fullscreen mode
+  useEffect(() => {
+    if (!isFullscreen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsFullscreen(false);
+      } else if (e.key === 'ArrowLeft') {
+        handlePrevImage();
+      } else if (e.key === 'ArrowRight') {
+        handleNextImage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen, activeIndex]);
+
   const handleThumbnailClick = (index: number) => {
     setActiveIndex(index);
   };
@@ -48,6 +66,14 @@ export default function Album({ images }: AlbumProps) {
 
   const closeFullscreen = () => {
     setIsFullscreen(false);
+  };
+
+  const handlePrevImage = () => {
+    setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const handleNextImage = () => {
+    setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -147,20 +173,58 @@ export default function Album({ images }: AlbumProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center"
             onClick={closeFullscreen}
           >
+            {/* Close button */}
             <button
-              className="absolute top-4 right-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-              onClick={closeFullscreen}
+              className="absolute top-4 right-4 w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10 backdrop-blur-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeFullscreen();
+              }}
+              aria-label="Close fullscreen"
             >
-              <span className="material-symbols-outlined">close</span>
+              <span className="material-symbols-outlined text-2xl">close</span>
             </button>
+
+            {/* Previous button */}
+            <button
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10 backdrop-blur-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrevImage();
+              }}
+              aria-label="Previous image"
+            >
+              <span className="material-symbols-outlined text-2xl">chevron_left</span>
+            </button>
+
+            {/* Next button */}
+            <button
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10 backdrop-blur-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNextImage();
+              }}
+              aria-label="Next image"
+            >
+              <span className="material-symbols-outlined text-2xl">chevron_right</span>
+            </button>
+
+            {/* Image counter */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 rounded-full text-white text-sm backdrop-blur-sm">
+              {activeIndex + 1} / {images.length}
+            </div>
+
+            {/* Main image */}
             <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              className="relative w-full h-full max-w-4xl max-h-[90vh]"
+              key={activeIndex}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-full h-full max-w-5xl max-h-[90vh] px-20"
               onClick={(e) => e.stopPropagation()}
             >
               <Image
@@ -169,6 +233,7 @@ export default function Album({ images }: AlbumProps) {
                 fill
                 className="object-contain"
                 sizes="90vw"
+                priority
               />
             </motion.div>
           </motion.div>
