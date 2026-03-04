@@ -1,5 +1,4 @@
-import fs from 'fs';
-import path from 'path';
+import { Redis } from '@upstash/redis';
 
 export interface Guest {
   id: string;
@@ -8,88 +7,91 @@ export interface Guest {
   createdAt: string;
 }
 
-// Use /tmp directory on Vercel (serverless has read-only filesystem except /tmp)
-// For local development, use ./data directory
-const isVercel = process.env.VERCEL === '1';
-const DATA_DIR = isVercel ? '/tmp/wedding-data' : path.join(process.cwd(), 'data');
-const GUESTS_FILE_PATH = path.join(DATA_DIR, 'guests.json');
+// Initialize Redis client
+// Falls back to in-memory storage if Redis not configured (for local dev without Redis)
+let redis: Redis | null = null;
 
-// Ensure data directory exists
-function ensureDataDirectory() {
-  console.log('[guestStorage] Environment: Vercel =', process.env.VERCEL);
-  console.log('[guestStorage] Data directory:', DATA_DIR);
-  console.log('[guestStorage] Guests file path:', GUESTS_FILE_PATH);
-  
-  if (!fs.existsSync(DATA_DIR)) {
-    console.log('[guestStorage] Creating data directory...');
-    try {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-      console.log('[guestStorage] Data directory created successfully');
-    } catch (error) {
-      console.error('[guestStorage] Failed to create directory:', error);
-      throw error;
-    }
+try {
+  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+    redis = new Redis({
+      url: process.env.KV_REST_API_URL,
+      token: process.env.KV_REST_API_TOKEN,
+    });
+    console.log('[Redis] Connected successfully to:', process.env.KV_REST_API_URL);
   } else {
-    console.log('[guestStorage] Data directory exists');
+    console.log('[Redis] No credentials found, using in-memory fallback');
   }
+} catch (error) {
+  console.error('[Redis] Connection error:', error);
 }
 
-// Read guests from file
-export function readGuests(): Guest[] {
+const GUESTS_KEY = 'wedding:guests';
+
+// In-memory fallback for local development without Redis
+let memoryStore: Guest[] = [];
+
+// Read guests
+export async function readGuests(): Promise<Guest[]> {
   try {
-    console.log('[readGuests] Reading from:', GUESTS_FILE_PATH);
-    ensureDataDirectory();
-    if (!fs.existsSync(GUESTS_FILE_PATH)) {
-      console.log('[readGuests] File not found, creating empty file');
-      fs.writeFileSync(GUESTS_FILE_PATH, JSON.stringify([], null, 2));
-      console.log('[readGuests] Empty file created');
-      return [];
+    if (redis) {
+      console.log('[readGuests] Reading from Redis...');
+      const data = await redis.get<Guest[]>(GUESTS_KEY);
+      const guests = data || [];
+      console.log(`[readGuests] Found ${guests.length} guests in Redis`);
+      return guests;
+    } else {
+      console.log(`[readGuests] Using memory store: ${memoryStore.length} guests`);
+      return memoryStore;
     }
-    const fileContent = fs.readFileSync(GUESTS_FILE_PATH, 'utf-8');
-    const guests = JSON.parse(fileContent);
-    console.log(`[readGuests] Successfully read ${guests.length} guests`);
-    return guests;
   } catch (error) {
-    console.error('[readGuests] Error reading guests file:', error);
-    return [];
+    console.error('[readGuests] Error:', error);
+    return memoryStore;
   }
 }
 
-// Write guests to file
-export function writeGuests(guests: Guest[]): boolean {
+// Write guests
+export async function writeGuests(guests: Guest[]): Promise<boolean> {
   try {
-    console.log(`[writeGuests] Writing ${guests.length} guests to:`, GUESTS_FILE_PATH);
-    ensureDataDirectory();
-    fs.writeFileSync(GUESTS_FILE_PATH, JSON.stringify(guests, null, 2));
-    console.log('[writeGuests] Write successful');
-    return true;
+    console.log(`[writeGuests] Writing ${guests.length} guests...`);
+    if (redis) {
+      await redis.set(GUESTS_KEY, guests);
+      console.log('[writeGuests] Successfully wrote to Redis');
+      return true;
+    } else {
+      memoryStore = guests;
+      console.log('[writeGuests] Wrote to memory store');
+      return true;
+    }
   } catch (error) {
-    console.error('[writeGuests] Error writing guests file:', error);
+    console.error('[writeGuests] Error:', error);
     return false;
   }
 }
 
 // Add a guest
-export function addGuest(guest: Guest): boolean {
+export async function addGuest(guest: Guest): Promise<boolean> {
   console.log('[addGuest] Adding new guest:', guest);
-  const guests = readGuests();
+  const guests = await readGuests();
   guests.push(guest);
-  const result = writeGuests(guests);
+  const result = await writeGuests(guests);
   console.log('[addGuest] Result:', result ? 'SUCCESS' : 'FAILED');
   return result;
 }
 
 // Delete a guest
-export function deleteGuest(id: string): boolean {
+export async function deleteGuest(id: string): Promise<boolean> {
   console.log('[deleteGuest] Deleting guest with ID:', id);
-  const guests = readGuests();
+  const guests = await readGuests();
   const filteredGuests = guests.filter(g => g.id !== id);
   console.log(`[deleteGuest] Removed ${guests.length - filteredGuests.length} guest(s)`);
-  return writeGuests(filteredGuests);
+  return await writeGuests(filteredGuests);
 }
 
 // Find a guest by ID
-export function findGuestById(id: string): Guest | null {
-  const guests = readGuests();
-  return guests.find(g => g.id === id) || null;
+export async function findGuestById(id: string): Promise<Guest | null> {
+  console.log('[findGuestById] Searching for guest:', id);
+  const guests = await readGuests();
+  const guest = guests.find(g => g.id === id) || null;
+  console.log('[findGuestById] Result:', guest ? 'FOUND' : 'NOT FOUND');
+  return guest;
 }

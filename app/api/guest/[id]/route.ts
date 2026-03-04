@@ -8,7 +8,7 @@ export async function GET(
 ) {
   const { id } = await params;
   
-  const guest = findGuestById(id);
+  const guest = await findGuestById(id);
   
   if (!guest) {
     return NextResponse.json(

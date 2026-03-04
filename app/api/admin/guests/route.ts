@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   }
 
   console.log('[GET /api/admin/guests] Fetching guests...');
-  const guests = readGuests();
+  const guests = await readGuests();
   console.log(`[GET /api/admin/guests] Returning ${guests.length} guests`);
   return NextResponse.json({ success: true, guests });
 }
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     
     console.log('[POST /api/admin/guests] Created guest object:', newGuest);
 
-    const addResult = addGuest(newGuest);
+    const addResult = await addGuest(newGuest);
     console.log('[POST /api/admin/guests] addGuest result:', addResult);
     
     if (!addResult) {
@@ -88,7 +88,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ success: false, message: 'Guest ID required' }, { status: 400 });
     }
 
-    const deleteResult = deleteGuest(id);
+    const deleteResult = await deleteGuest(id);
     console.log('[DELETE /api/admin/guests] Delete result:', deleteResult);
 
     return NextResponse.json({ success: true });
