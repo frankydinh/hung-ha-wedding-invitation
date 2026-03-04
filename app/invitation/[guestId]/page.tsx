@@ -10,7 +10,7 @@ export const dynamicParams = true;
 // Generate static pages for all guests in the list
 export async function generateStaticParams() {
   try {
-    const guests = readGuests();
+    const guests = await readGuests();
     
     // Include 'generic' for the default invitation
     const params = [
@@ -37,7 +37,7 @@ export async function generateMetadata({
   
   let guestName = 'Quý khách';
   if (guestId !== 'generic') {
-    const guest = findGuestById(guestId);
+    const guest = await findGuestById(guestId);
     if (guest) {
       guestName = guest.name;
     }
@@ -101,7 +101,7 @@ export default async function InvitationPage({
       guestType: 'groom',
     };
   } else {
-    const guest = findGuestById(guestId);
+    const guest = await findGuestById(guestId);
     
     if (guest) {
       guestData = guest;
