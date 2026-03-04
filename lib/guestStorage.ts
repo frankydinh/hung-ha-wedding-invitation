@@ -89,9 +89,15 @@ export async function deleteGuest(id: string): Promise<boolean> {
 
 // Find a guest by ID
 export async function findGuestById(id: string): Promise<Guest | null> {
-  console.log('[findGuestById] Searching for guest:', id);
-  const guests = await readGuests();
-  const guest = guests.find(g => g.id === id) || null;
-  console.log('[findGuestById] Result:', guest ? 'FOUND' : 'NOT FOUND');
-  return guest;
+  try {
+    console.log('[findGuestById] Searching for guest:', id);
+    const guests = await readGuests();
+    const guest = guests.find(g => g.id === id) || null;
+    console.log('[findGuestById] Result:', guest ? 'FOUND' : 'NOT FOUND');
+    return guest;
+  } catch (error) {
+    console.error('[findGuestById] Error:', error);
+    // Return null on error instead of throwing
+    return null;
+  }
 }

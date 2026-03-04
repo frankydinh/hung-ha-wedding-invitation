@@ -37,9 +37,14 @@ export async function generateMetadata({
   
   let guestName = 'Quý khách';
   if (guestId !== 'generic') {
-    const guest = await findGuestById(guestId);
-    if (guest) {
-      guestName = guest.name;
+    try {
+      const guest = await findGuestById(guestId);
+      if (guest) {
+        guestName = guest.name;
+      }
+    } catch (error) {
+      console.error('[generateMetadata] Error finding guest:', error);
+      // Continue with default name
     }
   }
 
@@ -91,28 +96,42 @@ export default async function InvitationPage({
 }) {
   const { guestId } = await params;
   
+  console.log('[InvitationPage] Loading page for guestId:', guestId);
+  
   // Fetch guest data from storage
   let guestData: GuestData;
   
-  if (guestId === 'generic') {
+  try {
+    if (guestId === 'generic') {
+      guestData = {
+        id: 'generic',
+        name: 'generic',
+        guestType: 'groom',
+      };
+    } else {
+      const guest = await findGuestById(guestId);
+      
+      if (guest) {
+        console.log('[InvitationPage] Found guest:', guest.name);
+        guestData = guest;
+      } else {
+        console.log('[InvitationPage] Guest not found, using fallback');
+        // Fallback for guests not in the list (SSR)
+        guestData = {
+          id: guestId,
+          name: 'Quý khách',
+          guestType: guestId.includes('groom') ? 'groom' : 'bride',
+        };
+      }
+    }
+  } catch (error) {
+    console.error('[InvitationPage] Error loading guest data:', error);
+    // Fallback on error
     guestData = {
-      id: 'generic',
-      name: 'generic',
+      id: guestId,
+      name: 'Quý khách',
       guestType: 'groom',
     };
-  } else {
-    const guest = await findGuestById(guestId);
-    
-    if (guest) {
-      guestData = guest;
-    } else {
-      // Fallback for guests not in the list (SSR)
-      guestData = {
-        id: guestId,
-        name: 'Quý khách',
-        guestType: guestId.includes('groom') ? 'groom' : 'bride',
-      };
-    }
   }
 
   return (
