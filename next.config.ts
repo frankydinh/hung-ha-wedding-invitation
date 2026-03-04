@@ -4,8 +4,8 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/wedding-invitation' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/wedding-invitation/' : '',
+  // Note: basePath/assetPrefix removed for Vercel deployment
+  // The app now runs at root domain instead of subdirectory
 };
 
 export default nextConfig;

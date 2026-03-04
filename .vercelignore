@@ -1,0 +1,14 @@
+# Ignore local data file to avoid deploying test data
+# Vercel will create this file automatically when guests are added
+data/guests.json
+
+# Development files
+.env.local
+.DS_Store
+
+# Documentation
+*.md
+!README.md
+
+# Image generation script
+scripts/generate-images.js
