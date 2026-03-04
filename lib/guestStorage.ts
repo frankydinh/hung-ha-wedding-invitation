@@ -41,11 +41,12 @@ export async function readGuests(): Promise<Guest[]> {
       return guests;
     } else {
       console.log(`[readGuests] Using memory store: ${memoryStore.length} guests`);
-      return memoryStore;
+      return [...memoryStore]; // Return copy to prevent mutations
     }
   } catch (error) {
     console.error('[readGuests] Error:', error);
-    return memoryStore;
+    // Always return a valid array, never throw
+    return [...memoryStore];
   }
 }
 
