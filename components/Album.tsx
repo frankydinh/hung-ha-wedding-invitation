@@ -38,13 +38,33 @@ export default function Album({ images }: AlbumProps) {
     };
   }, [imagesLoaded]);
 
+  const handleThumbnailClick = (index: number) => {
+    setActiveIndex(index);
+  };
+
+  const handleMainImageClick = () => {
+    setIsFullscreen(true);
+  };
+
+  const closeFullscreen = useCallback(() => {
+    setIsFullscreen(false);
+  }, []);
+
+  const handlePrevImage = useCallback(() => {
+    setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  }, [images.length]);
+
+  const handleNextImage = useCallback(() => {
+    setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  }, [images.length]);
+
   // Keyboard navigation for fullscreen mode
   useEffect(() => {
     if (!isFullscreen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setIsFullscreen(false);
+        closeFullscreen();
       } else if (e.key === 'ArrowLeft') {
         handlePrevImage();
       } else if (e.key === 'ArrowRight') {
@@ -54,27 +74,7 @@ export default function Album({ images }: AlbumProps) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isFullscreen, activeIndex]);
-
-  const handleThumbnailClick = (index: number) => {
-    setActiveIndex(index);
-  };
-
-  const handleMainImageClick = () => {
-    setIsFullscreen(true);
-  };
-
-  const closeFullscreen = () => {
-    setIsFullscreen(false);
-  };
-
-  const handlePrevImage = () => {
-    setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const handleNextImage = () => {
-    setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
+  }, [isFullscreen, closeFullscreen, handlePrevImage, handleNextImage]);
 
   return (
     <div ref={albumRef} className="max-w-md mx-auto min-h-screen relative flex flex-col items-center overflow-hidden border-x border-gray-100 dark:border-gray-800 shadow-2xl bg-[#FFFBF2] dark:bg-[#1A1A1A]" style={{ fontFamily: '"Montserrat", sans-serif' }}>
