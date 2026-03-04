@@ -251,7 +251,7 @@ export default function AdminPage({ params }: { params: Promise<{ token: string 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Mã PIN</label>
               <input
-                type="password"
+                type="number"
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B1D2F] focus:border-transparent"
