@@ -6,10 +6,13 @@ export async function GET(request: Request) {
   const token = request.headers.get('authorization')?.replace('Bearer ', '');
   
   if (!token || !verifyToken(token)) {
+    console.log('[GET /api/admin/guests] Unauthorized request');
     return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
   }
 
+  console.log('[GET /api/admin/guests] Fetching guests...');
   const guests = readGuests();
+  console.log(`[GET /api/admin/guests] Returning ${guests.length} guests`);
   return NextResponse.json({ success: true, guests });
 }
 
@@ -17,11 +20,15 @@ export async function POST(request: Request) {
   const token = request.headers.get('authorization')?.replace('Bearer ', '');
   
   if (!token || !verifyToken(token)) {
+    console.log('[POST /api/admin/guests] Unauthorized request');
     return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
   }
 
   try {
-    const { name, guestType } = await request.json();
+    const body = await request.json();
+    console.log('[POST /api/admin/guests] Request body:', body);
+    
+    const { name, guestType } = body;
     
     const newGuest: Guest = {
       id: `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -29,10 +36,25 @@ export async function POST(request: Request) {
       guestType,
       createdAt: new Date().toISOString(),
     };
+    
+    console.log('[POST /api/admin/guests] Created guest object:', newGuest);
 
-    addGuest(newGuest);
+    const addResult = addGuest(newGuest);
+    console.log('[POST /api/admin/guests] addGuest result:', addResult);
+    
+    if (!addResult) {
+      console.error('[POST /api/admin/guests] Failed to add guest to storage');
+      return NextResponse.json(
+        { success: false, message: 'Failed to save guest to storage' },
+        { status: 500 }
+      );
+    }
 
-    const guestLink = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/invitation/${newGuest.id}`;
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    console.log('[POST /api/admin/guests] Base URL:', baseUrl);
+    
+    const guestLink = `${baseUrl}/invitation/${newGuest.id}`;
+    console.log('[POST /api/admin/guests] Generated link:', guestLink);
 
     return NextResponse.json({ 
       success: true, 
@@ -40,8 +62,9 @@ export async function POST(request: Request) {
       link: guestLink 
     });
   } catch (error) {
+    console.error('[POST /api/admin/guests] Error:', error);
     return NextResponse.json(
-      { success: false, message: 'Error creating guest' },
+      { success: false, message: 'Error creating guest', error: String(error) },
       { status: 500 }
     );
   }
@@ -51,23 +74,28 @@ export async function DELETE(request: Request) {
   const token = request.headers.get('authorization')?.replace('Bearer ', '');
   
   if (!token || !verifyToken(token)) {
+    console.log('[DELETE /api/admin/guests] Unauthorized request');
     return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
+    console.log('[DELETE /api/admin/guests] Guest ID:', id);
 
     if (!id) {
+      console.log('[DELETE /api/admin/guests] No ID provided');
       return NextResponse.json({ success: false, message: 'Guest ID required' }, { status: 400 });
     }
 
-    deleteGuest(id);
+    const deleteResult = deleteGuest(id);
+    console.log('[DELETE /api/admin/guests] Delete result:', deleteResult);
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error('[DELETE /api/admin/guests] Error:', error);
     return NextResponse.json(
-      { success: false, message: 'Error deleting guest' },
+      { success: false, message: 'Error deleting guest', error: String(error) },
       { status: 500 }
     );
   }
