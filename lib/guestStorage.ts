@@ -8,16 +8,27 @@ export interface Guest {
   createdAt: string;
 }
 
-const GUESTS_FILE_PATH = path.join(process.cwd(), 'data', 'guests.json');
+// Use /tmp directory on Vercel (serverless has read-only filesystem except /tmp)
+// For local development, use ./data directory
+const isVercel = process.env.VERCEL === '1';
+const DATA_DIR = isVercel ? '/tmp/wedding-data' : path.join(process.cwd(), 'data');
+const GUESTS_FILE_PATH = path.join(DATA_DIR, 'guests.json');
 
 // Ensure data directory exists
 function ensureDataDirectory() {
-  const dataDir = path.join(process.cwd(), 'data');
-  console.log('[guestStorage] Checking data directory:', dataDir);
-  if (!fs.existsSync(dataDir)) {
+  console.log('[guestStorage] Environment: Vercel =', process.env.VERCEL);
+  console.log('[guestStorage] Data directory:', DATA_DIR);
+  console.log('[guestStorage] Guests file path:', GUESTS_FILE_PATH);
+  
+  if (!fs.existsSync(DATA_DIR)) {
     console.log('[guestStorage] Creating data directory...');
-    fs.mkdirSync(dataDir, { recursive: true });
-    console.log('[guestStorage] Data directory created successfully');
+    try {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+      console.log('[guestStorage] Data directory created successfully');
+    } catch (error) {
+      console.error('[guestStorage] Failed to create directory:', error);
+      throw error;
+    }
   } else {
     console.log('[guestStorage] Data directory exists');
   }
