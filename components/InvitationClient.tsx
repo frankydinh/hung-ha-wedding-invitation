@@ -7,6 +7,7 @@ import ThanhHon from '@/components/ThanhHon';
 import Album from '@/components/Album';
 import FloatingButtons from '@/components/FloatingButtons';
 import CurtainEffect from '@/components/CurtainEffect';
+import CursorHeartEffect from '@/components/CursorHeartEffect';
 import { GuestData, WeddingEventData } from '@/types';
 
 const SLIDE_IMAGES = [
@@ -108,6 +109,7 @@ export default function InvitationClient({
           />
         )}
       </div>
+      <CursorHeartEffect />
       <CurtainEffect isOpen={isOpened} onAnimationComplete={handleCurtainComplete} />
     </>
   );

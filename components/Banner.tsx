@@ -84,13 +84,15 @@ export default function Banner({ onOpenInvitation, guestName, guestType, isMusic
               </div>
             </div>
           )}
-          <div className={showGuestName ? "space-y-2 mb-12" : "space-y-2 mb-12 -translate-y-6"}>
-            <p className="text-gold-light/60 uppercase tracking-[0.3em] text-[10px]" style={{ fontFamily: '"Montserrat", sans-serif' }}>Official Invitation</p>
-            <h1 className="text-5xl md:text-6xl text-gold-light leading-none drop-shadow-md" style={{ fontFamily: '"Pinyon Script", cursive' }}>
-              Save the <br/>Date
-            </h1>
-            <div className="w-12 h-[1px] bg-gold-medium/50 mt-4"></div>
-          </div>
+          {!showGuestName && (
+            <div className="space-y-2 mb-12 -translate-y-6">
+              <p className="text-gold-light/60 uppercase tracking-[0.3em] text-[10px]" style={{ fontFamily: '"Montserrat", sans-serif' }}>Official Invitation</p>
+              <h1 className="text-5xl md:text-6xl text-gold-light leading-none drop-shadow-md" style={{ fontFamily: '"Pinyon Script", cursive' }}>
+                Save the <br/>Date
+              </h1>
+              <div className="w-12 h-[1px] bg-gold-medium/50 mt-4"></div>
+            </div>
+          )}
           
           {/* Decorative star */}
           <div className="absolute top-10 left-8 opacity-20">

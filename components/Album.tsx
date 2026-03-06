@@ -103,15 +103,24 @@ export default function Album({ images }: AlbumProps) {
       
       <main className="flex-1 w-full px-8 py-6 text-center z-10 flex flex-col items-center">
         <header className="mb-8">
-          <p className="text-3xl text-[#8B1D2F] mb-2" style={{ fontFamily: '"Dancing Script", cursive' }}>Album ảnh cưới</p>
+          <motion.p 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-3xl text-[#8B1D2F] mb-2" 
+            style={{ fontFamily: '"Dancing Script", cursive' }}
+          >
+            Album ảnh cưới
+          </motion.p>
         </header>
         
         <div className="w-full flex flex-col items-center space-y-4 max-w-[320px]">
           {/* Main image */}
           <motion.div
             key={activeIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
             className="relative w-full aspect-[3/4] rounded-[10px] overflow-hidden shadow-lg border border-gray-200 bg-gray-100 cursor-pointer"
             onClick={handleMainImageClick}

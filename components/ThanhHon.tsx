@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { GuestData, WeddingEventData } from '@/types';
 
 interface ThanhHonProps {
@@ -38,21 +39,57 @@ export default function ThanhHon({ guestData, eventData }: ThanhHonProps) {
       
       <main className="flex-1 w-full px-8 py-6 text-center z-10">
         <header className="mb-10">
-          <p className="text-2xl text-[#8B1D2F] dark:text-[#D4AF37] mb-2" style={{ fontFamily: '"Dancing Script", cursive' }}>
+          <motion.p 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-2xl text-[#8B1D2F] dark:text-[#D4AF37] mb-2" 
+            style={{ fontFamily: '"Dancing Script", cursive' }}
+          >
             {isGroomGuest ? 'Lễ Thành Hôn' : 'Lễ Vu quy'}
-          </p>
+          </motion.p>
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold tracking-tight uppercase text-gray-900 dark:text-white" style={{ fontFamily: '"Playfair Display", serif' }}>
+            <motion.h1 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="text-4xl font-bold tracking-tight uppercase text-gray-900 dark:text-white" 
+              style={{ fontFamily: '"Playfair Display", serif' }}
+            >
               {eventData.groomName}
-            </h1>
-            <p className="text-3xl text-[#D4AF37]" style={{ fontFamily: '"Dancing Script", cursive' }}>&amp;</p>
-            <h1 className="text-4xl font-bold tracking-tight uppercase text-gray-900 dark:text-white" style={{ fontFamily: '"Playfair Display", serif' }}>
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-3xl text-[#D4AF37]" 
+              style={{ fontFamily: '"Dancing Script", cursive' }}
+            >
+              &amp;
+            </motion.p>
+            <motion.h1 
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-4xl font-bold tracking-tight uppercase text-gray-900 dark:text-white" 
+              style={{ fontFamily: '"Playfair Display", serif' }}
+            >
               {eventData.brideName}
-            </h1>
+            </motion.h1>
           </div>
         </header>
         
-        <div className="relative py-12 mb-10 border-y border-[#D4AF37]/30">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="relative py-12 mb-10 border-y border-[#D4AF37]/30"
+        >
           <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#FFFBF2] dark:bg-[#1A1A1A] px-4 text-xs tracking-widest uppercase text-gray-500" style={{ fontFamily: '"Montserrat", sans-serif' }}>
             Trân trọng kính mời
           </div>
@@ -82,15 +119,27 @@ export default function ThanhHon({ guestData, eventData }: ThanhHonProps) {
               favorite
             </span>
           </div>
-        </div>
+        </motion.div>
         
         <section className="space-y-6">
-          <div className="space-y-1">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="space-y-1"
+          >
             <p className="italic text-xl" style={{ fontFamily: '"Playfair Display", serif' }}>
               {isGroomGuest ? 'Tại tư gia nhà trai' : 'Tại tư gia nhà gái'}
             </p>
-          </div>
-          <div className="flex flex-col items-center space-y-4">
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex flex-col items-center space-y-4"
+          >
             <div className="w-12 h-12 rounded-full bg-[#8B1D2F] flex items-center justify-center text-white shadow-lg">
               <span className="material-symbols-outlined">place</span>
             </div>
@@ -106,7 +155,7 @@ export default function ThanhHon({ guestData, eventData }: ThanhHonProps) {
                 <span className="material-symbols-outlined text-sm ml-1">open_in_new</span>
               </div>
             </a>
-          </div>
+          </motion.div>
         </section>
       </main>
       
