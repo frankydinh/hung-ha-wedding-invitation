@@ -79,7 +79,7 @@ const brideEventData: WeddingEventData = {
   groomName: 'Khánh Hưng',
   brideName: 'Đinh Hà',
   tieCuoiDate: '21/03/2026',
-  tieCuoiTime: 'Lúc 17:00, Thứ bảy',
+  tieCuoiTime: 'Lúc 16h:30, Thứ bảy',
   tieCuoiLunarDate: '(Tức ngày 3, tháng 2 năm Bính Ngọ)',
   tieCuoiLocation: 'Tổ dân phố số 3, Phường Lý Thường Kiệt',
   tieCuoiProvince: 'Tỉnh Ninh Bình',
