@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import Toast from './Toast';
 
 interface FloatingButtonsProps {
   guestType: 'groom' | 'bride';
@@ -9,8 +10,13 @@ interface FloatingButtonsProps {
 }
 
 export default function FloatingButtons({ guestType, isMusicPlaying, toggleMusic }: FloatingButtonsProps) {
+  const [showToast, setShowToast] = useState(false);
+
   const downloadAsImage = async () => {
     try {
+      // Show toast notification
+      setShowToast(true);
+
       // Determine which pre-generated image to download
       const imageName = guestType === 'groom' 
         ? 'thiep-cuoi-hung-ha-nha-trai.png' 
@@ -64,6 +70,15 @@ export default function FloatingButtons({ guestType, isMusicPlaying, toggleMusic
           download
         </span>
       </button>
+
+      {/* Toast notification */}
+      {showToast && (
+        <Toast 
+          message="Đang tải thiệp cưới. Vui lòng đợi" 
+          onClose={() => setShowToast(false)}
+          duration={5000}
+        />
+      )}
     </>
   );
 }
