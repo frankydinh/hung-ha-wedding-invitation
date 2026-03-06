@@ -44,7 +44,7 @@ export default function ThanhHon({ guestData, eventData }: ThanhHonProps) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-2xl text-[#8B1D2F] dark:text-[#D4AF37] mb-2" 
+            className="text-[28px] text-[#8B1D2F] dark:text-[#D4AF37] mb-2" 
             style={{ fontFamily: '"Dancing Script", cursive' }}
           >
             {isGroomGuest ? 'Lễ Thành Hôn' : 'Lễ Vu quy'}
@@ -87,7 +87,7 @@ export default function ThanhHon({ guestData, eventData }: ThanhHonProps) {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
           className="relative py-12 mb-10 border-y border-[#D4AF37]/30"
         >
           <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#FFFBF2] dark:bg-[#1A1A1A] px-4 text-xs tracking-widest uppercase text-gray-500" style={{ fontFamily: '"Montserrat", sans-serif' }}>
