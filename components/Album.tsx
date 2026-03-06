@@ -137,7 +137,7 @@ export default function Album({ images }: AlbumProps) {
           </motion.div>
           
           {/* Thumbnails */}
-          <div className="grid grid-cols-4 gap-2 w-full">
+          <div className="grid grid-cols-5 gap-2 w-full">
             {images.map((image, index) => (
               <div
                 key={index}

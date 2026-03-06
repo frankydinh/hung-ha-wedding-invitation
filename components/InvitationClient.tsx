@@ -11,18 +11,11 @@ import CursorHeartEffect from '@/components/CursorHeartEffect';
 import { GuestData, WeddingEventData } from '@/types';
 
 const SLIDE_IMAGES = [
-  '/slide_images/DSC05099.png',
-  '/slide_images/DSC05423.png',
-  '/slide_images/DSC05362.png',
-  '/slide_images/DSC05186.png',
-  '/slide_images/DSC03488.png',
-  '/slide_images/DSC03683.png',
-  '/slide_images/DSC03856.png',
-  '/slide_images/DSC03886.png',
-  '/slide_images/DSC04202.png',
-  '/slide_images/DSC04619.png',
-  '/slide_images/DSC04539.png',
-  '/slide_images/DSC04607.png',
+  '/side_images2/DSC03826.png',
+  '/side_images2/DSC03886.png',
+  '/side_images2/DSC04453.png',
+  '/side_images2/DSC05099.png',
+  '/side_images2/DSC05362.png',
 ];
 
 interface InvitationClientProps {
