@@ -1,31 +1,12 @@
 import React from 'react';
 import { Metadata } from 'next';
 import InvitationClient from '@/components/InvitationClient';
-import { findGuestById, readGuests } from '@/lib/guestStorage';
+import { findGuestById } from '@/lib/guestStorage';
 import { GuestData, WeddingEventData } from '@/types';
 
-// Enable static generation for known guests, allow SSR for unknown ones
-export const dynamicParams = true;
-
-// Generate static pages for all guests in the list
-export async function generateStaticParams() {
-  try {
-    const guests = await readGuests();
-    
-    // Include 'generic' for the default invitation
-    const params = [
-      { guestId: 'generic' },
-      ...guests.map((guest) => ({
-        guestId: guest.id,
-      })),
-    ];
-    
-    return params;
-  } catch (error) {
-    console.error('Error generating static params:', error);
-    return [{ guestId: 'generic' }];
-  }
-}
+// Force dynamic rendering since guest data comes from Redis and can change
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // Generate metadata for each page
 export async function generateMetadata({ 
