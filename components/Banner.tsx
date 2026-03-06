@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
-import Toast from './Toast';
+import { useEffect } from 'react';
+import ActionButtons from './ActionButtons';
 
 interface BannerProps {
   onOpenInvitation: () => void;
@@ -13,7 +13,6 @@ interface BannerProps {
 }
 
 export default function Banner({ onOpenInvitation, guestName, guestType, isMusicPlaying, toggleMusic }: BannerProps) {
-  const [showToast, setShowToast] = useState(false);
   const showGuestName = guestName && guestName !== 'Quý khách' && guestName !== 'generic';
 
   // Format guest name to display max 2 words per line
@@ -31,34 +30,17 @@ export default function Banner({ onOpenInvitation, guestName, guestType, isMusic
 
   const guestNameLines = showGuestName ? formatGuestName(guestName) : [];
 
-  const downloadAsImage = async () => {
-    try {
-      // Show toast notification
-      setShowToast(true);
+  // Handle scroll down event to open invitation
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (e.deltaY > 0) {
+        onOpenInvitation();
+      }
+    };
 
-      // Determine which pre-generated image to download
-      const imageName = guestType === 'groom' 
-        ? 'thiep-cuoi-hung-ha-nha-trai.png' 
-        : 'thiep-cuoi-hung-ha-nha-gai.png';
-      
-      // Fetch the pre-generated image
-      const response = await fetch(`/${imageName}`);
-      const blob = await response.blob();
-      
-      // Create download link
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'thiep-cuoi-hung-ha.png';
-      link.click();
-      
-      // Clean up
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Error downloading image:', error);
-      alert('Không thể tải ảnh. Vui lòng thử lại.');
-    }
-  };
+    window.addEventListener('wheel', handleWheel);
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, [onOpenInvitation]);
   
   return (
     <div className="relative w-full max-w-[450px] h-screen bg-primary shadow-2xl overflow-hidden border-x border-gold-dark/20">
@@ -129,24 +111,13 @@ export default function Banner({ onOpenInvitation, guestName, guestType, isMusic
         </div>
       </div>
       
-      {/* Floating buttons */}
-      <div className="absolute bottom-8 left-0 right-0 px-8 flex justify-between items-center z-40">
-        <button 
-          onClick={toggleMusic}
-          className="w-12 h-12 flex items-center justify-center rounded-full bg-black/20 backdrop-blur-md border border-white/10 text-gold-light hover:bg-black/40 transition-all active:scale-95 shadow-lg group"
-          aria-label={isMusicPlaying ? 'Pause music' : 'Play music'}
-        >
-          <span className="material-symbols-outlined text-xl group-hover:rotate-12 transition-transform">
-            {isMusicPlaying ? 'music_note' : 'music_off'}
-          </span>
-        </button>
-        <button 
-          onClick={downloadAsImage}
-          className="w-12 h-12 flex items-center justify-center rounded-full bg-gold-medium/80 backdrop-blur-md border border-white/20 text-white hover:bg-gold-dark transition-all active:scale-95 shadow-lg group"
-        >
-          <span className="material-symbols-outlined text-xl group-hover:translate-y-1 transition-transform">download</span>
-        </button>
-      </div>
+      {/* Action Buttons */}
+      <ActionButtons 
+        guestType={guestType}
+        isMusicPlaying={isMusicPlaying}
+        toggleMusic={toggleMusic}
+        variant="banner"
+      />
       
       {/* Top right corner decoration */}
       <div className="absolute top-0 right-0 p-4 opacity-30 pointer-events-none">
@@ -176,15 +147,6 @@ export default function Banner({ onOpenInvitation, guestName, guestType, isMusic
         <p className="text-gold-light text-[11px] font-medium tracking-[0.25em] uppercase mb-2 drop-shadow-sm" style={{ fontFamily: '"Montserrat", sans-serif' }}>Tap to open</p>
         <div className="w-[1px] h-8 bg-gradient-to-b from-gold-light to-transparent mx-auto opacity-60"></div>
       </div>
-
-      {/* Toast notification */}
-      {showToast && (
-        <Toast 
-          message="Đang tải thiệp cưới. Vui lòng đợi" 
-          onClose={() => setShowToast(false)}
-          duration={5000}
-        />
-      )}
     </div>
   );
 }
